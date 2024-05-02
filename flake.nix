@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    mavenix.url = "https://github.com/nix-community/mavenix";
+    mavenix.url = "github:nix-community/mavenix";
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
