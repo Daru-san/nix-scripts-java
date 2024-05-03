@@ -47,6 +47,13 @@ public class flakes extends App {
 
   // TODO: Get these working properly
   private static void getFlake(Option flakeDir) {
+    CommandLine cmd;
+    CommandLineParser cmdParser = new DefaultParser();
+    Options flakeDirs = new Options();
+    flakeDirs.addOption(flakeDir);
+
+    // String flakeDirString[] = {flakeDir.getValue()};
+    // cmd = cmdParser.parse(flakeDirs,flakeDir);
 
   }
 
