@@ -10,30 +10,6 @@ public class App {
     // Help option to show help options
     Option help = new Option("h", "help", false, "Show help menu");
 
-    // Flake usage
-    Options flakeOpts = new Options();
-    flakeOpts.addOption(help);
-    flakeOpts.addOption(new Option("U", "update-inputs", false, "Update all the flake inputs"));
-    flakeOpts.addOption(Option.builder("u").longOpt("flake-inputs")
-        .argName("config")
-        .hasArg()
-        .required(true)
-        .desc("Update a specific set of onputs").build());
-    flakeOpts.addOption(Option.builder("f").longOpt("flake-dir")
-        .argName("directory")
-        .hasArg()
-        .required(true)
-        .desc("Directory where the `flake.nix` is stored").build());
-    flakeOpts.addOption(new Option("c", "current-dir", false,
-        "Search the current working directory for a flake.nix file and use it"));
-    flakeOpts.addOption(new Option("a", "auto", false,
-        "Get the userString and use the current working directory"));
-    flakeOpts.addOption(Option.builder("s").longOpt("user-string")
-        .argName("string")
-        .hasArg()
-        .required(true)
-        .desc("The user@hostname combination used to build your configuration").build());
-
     // General options
     // TODO: Add other options like builders and cores
     Options hmOpts = new Options();
