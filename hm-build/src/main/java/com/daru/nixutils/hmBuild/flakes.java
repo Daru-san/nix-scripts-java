@@ -41,18 +41,19 @@ public class flakes extends App {
     flakeOpts.addOption(userString);
 
     getDir(flakeDir);
-    getFlake(flakeDir);
+    getFlake(flakeDir, currentDir);
     getInputs(flakeInputs);
   }
 
   // TODO: Get these working properly
-  private static void getFlake(Option flakeDir) {
+  private static void getFlake(Option flakeDir, Option currentDir) {
     CommandLine cmd;
     CommandLineParser cmdParser = new DefaultParser();
     Options flakeDirs = new Options();
     flakeDirs.addOption(flakeDir);
+    flakeDirs.addOption(currentDir);
 
-    // String flakeDirString[] = {flakeDir.getValue()};
+    String flakeDirString[] = { flakeDir.getValue(), currentDir.getValue() };
     // cmd = cmdParser.parse(flakeDirs,flakeDir);
 
   }
