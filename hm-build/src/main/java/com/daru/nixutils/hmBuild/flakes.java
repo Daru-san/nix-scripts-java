@@ -4,6 +4,7 @@ import org.apache.commons.cli.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.nio.file.Files;
 
 public class flakes extends App {
   public static void flakeOptions() {
@@ -122,8 +123,14 @@ public class flakes extends App {
     }
   }
 
-  private static void getDir(Option flakeDir) {
-
+  private static void getFlake(Option flakeDir) {
+    String dir = flakeDir.getValue();
+    if (Files.notExists(dir)) {
+      System.err.println("Directory " + dir + " does not exist");
+    }
+    if (Files.notExists(dir + "/flake.nix")) {
+      System.err.println("Directory " + dir + " does not contain a `flake.nix` file");
+    }
   }
 
   private static void getInputs(Option flakeInputs) {
