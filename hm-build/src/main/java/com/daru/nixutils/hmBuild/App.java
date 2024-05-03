@@ -4,7 +4,6 @@ import org.apache.commons.cli.*;
 
 public class App {
   public static void main(String[] args) {
-
     CommandLine cmd;
     CommandLineParser parser = new DefaultParser();
     HelpFormatter helper = new HelpFormatter();
@@ -31,6 +30,8 @@ public class App {
     Option verbose = new Option("v", "verbose", false, "Show verbose output");
     Option impure = new Option("i", "impure", false, "Enable the impure option in nix");
     Option dryRun = new Option("d", "dry-run", false, "Do not build anything, only show what is to be changed");
+
+    Options options = new Options();
     options.addOption(backup);
     options.addOption(showTrace);
     options.addOption(verbose);
@@ -42,5 +43,14 @@ public class App {
     options.addOption(hmBuild);
     options.addOption(hmSwitch);
 
+    try {
+      cmd = parser.parse(options, args);
+
+      if (cmd.hasOption("hmSwitch") && cmd.hasOption("hmBuild")) {
+        System.err.println("Error: `Build` and `Switch` cannot be used together");
+      }
+    } catch (Exception e) {
+      System.err.println("Errors were found: " + e.getMessage());
+    }
   }
 }
