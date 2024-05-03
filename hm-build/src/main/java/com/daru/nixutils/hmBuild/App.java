@@ -8,49 +8,48 @@ public class App {
     CommandLineParser parser = new DefaultParser();
     HelpFormatter helper = new HelpFormatter();
 
-    Option updateInputs = new Option("U", "update-inputs", false, "Update all the flake inputs");
-    Option enableFlake = new Option("F", "flake", false, "Enable flake usage");
-    Option flakeDir = Option.builder("f").longOpt("flake-dir")
+    // Help option to show help options
+    Option help = new Option("h", "help", false, "Show help menu");
+
+    // Flake usage
+    Options flakeOpts = new Options();
+    flakeOpts.addOption(help);
+    flakeOpts.addOption(new Option("U", "update-inputs", false, "Update all the flake inputs"));
+    flakeOpts.addOption(Option.builder("u").longOpt("flake-inputs")
+        .argName("config")
+        .hasArg()
+        .required(true)
+        .desc("Update a specific set of onputs").build());
+    flakeOpts.addOption(Option.builder("f").longOpt("flake-dir")
         .argName("flake-dir")
         .hasArg()
         .required(true)
-        .desc("Directory where the `flake.nix` is stored").build();
-    Option currentDir = new Option("c", "current-dir", false,
-        "Search the current working directory for a flake.nix file and use it");
-    Option autoMode = new Option("a", "auto", false,
-        "Get the userString and use the current working directory");
-    Option userString = Option.builder("s").longOpt("user-string")
+        .desc("Directory where the `flake.nix` is stored").build());
+    flakeOpts.addOption(new Option("c", "current-dir", false,
+        "Search the current working directory for a flake.nix file and use it"));
+    flakeOpts.addOption(new Option("a", "auto", false,
+        "Get the userString and use the current working directory"));
+    flakeOpts.addOption(Option.builder("s").longOpt("user-string")
         .argName("user-string")
         .hasArg()
         .required(true)
-        .desc("The user@hostname combination used to build your configuration").build();
+        .desc("The user@hostname combination used to build your configuration").build());
 
-    Option backup = new Option("b", "backup", false, "Backup conflicting files");
-    Option showTrace = new Option("t", "show-trace", false, "Show the logs");
-    Option verbose = new Option("v", "verbose", false, "Show verbose output");
-    Option impure = new Option("i", "impure", false, "Enable the impure option in nix");
-    Option dryRun = new Option("d", "dry-run", false, "Do not build anything, only show what is to be changed");
+    // General options
+    // TODO: Add other options like builders and cores
+    Options hmOpts = new Options();
+    hmOpts.addOption(help);
+    hmOpts.addOption(new Option("b", "backup", false, "Backup conflicting files"));
+    hmOpts.addOption(new Option("t", "show-trace", false, "Show the logs"));
+    hmOpts.addOption(new Option("v", "verbose", false, "Show verbose output"));
+    hmOpts.addOption(new Option("i", "impure", false, "Enable the impure option in nix"));
+    hmOpts.addOption(new Option("d", "dry-run", false, "Do not build anything, only show what is to be changed"));
 
-    Options options = new Options();
-    options.addOption(backup);
-    options.addOption(showTrace);
-    options.addOption(verbose);
-    options.addOption(impure);
-    options.addOption(dryRun);
+    // Build options
 
-    Option hmBuild = new Option("B", "build", false, "Build the configuration");
-    Option hmSwitch = new Option("S", "switch", false, "Build and switch to the configuration");
-    options.addOption(hmBuild);
-    options.addOption(hmSwitch);
-
-    try {
-      cmd = parser.parse(options, args);
-
-      if (cmd.hasOption("hmSwitch") && cmd.hasOption("hmBuild")) {
-        System.err.println("Error: `Build` and `Switch` cannot be used together");
-      }
-    } catch (Exception e) {
-      System.err.println("Errors were found: " + e.getMessage());
-    }
+    Options buildOpts = new Options();
+    buildOpts.addOption(new Option("B", "build", false, "Build the configuration"));
+    buildOpts.addOption(new Option("S", "switch", false, "Build and switch to the configuration"));
+    buildOpts.addOption(new Option("N", "news", false, "Show home-manager news (Nothing will be built)"));
   }
 }
