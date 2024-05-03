@@ -48,8 +48,33 @@ public class App {
     // Build options
 
     Options buildOpts = new Options();
-    buildOpts.addOption(new Option("B", "build", false, "Build the configuration"));
-    buildOpts.addOption(new Option("S", "switch", false, "Build and switch to the configuration"));
-    buildOpts.addOption(new Option("N", "news", false, "Show home-manager news (Nothing will be built)"));
+    buildOpts.addOption(help);
+    buildOpts.addOption(new Option("B", "build", false, "Build the configuration, incompatible with `switch`"));
+    buildOpts.addOption(
+        new Option("S", "switch", false, "Build and switch to the configuration, incompatible with `build`"));
+    buildOpts.addOption(
+        new Option("N", "news", false, "Show home-manager news (Nothing will be built), mutually exclusive"));
+
+    // Make sure that options are all compatible
+    try {
+      CommandLine buildCmd = parser.parse(buildOpts, args);
+
+      if (buildCmd.hasOption("build") && buildCmd.hasOption("switch")) {
+        System.err.println("`suild` and `switch` are mutually exclusive");
+        helper.printHelp("Build Options", buildOpts);
+      }
+
+      if (buildCmd.hasOption("build") && buildCmd.hasOption("help")) {
+        System.err.println("`suild` and `help` are mutually exclusive");
+        helper.printHelp("Build Options", buildOpts);
+      }
+
+      if (buildCmd.hasOption("switch") && buildCmd.hasOption("help")) {
+        System.err.println("`switch` and `help` are mutually exclusive");
+        helper.printHelp("Build Options", buildOpts);
+      }
+    } catch (ParseException e) {
+      System.out.println("Unexpected exception:" + e.getMessage());
+    }
   }
 }
