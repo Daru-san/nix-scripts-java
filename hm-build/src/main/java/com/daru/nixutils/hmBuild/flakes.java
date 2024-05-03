@@ -36,12 +36,12 @@ public class flakes extends App {
 
     // Getting user@hostname
     Option autoMode = new Option("a", "auto", false,
-        "Get the configuration url automatically and use the current working directory");
-    Option configUrl = Option.builder("s").longOpt("flake-url")
-        .argName("Flake URL")
+        "Get the configuration uri automatically and use the current working directory");
+    Option configUri = Option.builder("s").longOpt("flake-uri")
+        .argName("Flake uri")
         .hasArg()
         .required(true)
-        .desc("The user@hostname (url) of the configuration in the flake.nix file").build();
+        .desc("The user@hostname (uri) of the configuration in the flake.nix file").build();
 
     // Add the options
     flakeOpts.addOption(help);
@@ -51,7 +51,7 @@ public class flakes extends App {
     flakeOpts.addOption(flakeDir);
     flakeOpts.addOption(currentDir);
     flakeOpts.addOption(autoMode);
-    flakeOpts.addOption(configUrl);
+    flakeOpts.addOption(configUri);
 
     getDir(flakeDir);
     getInputs(flakeInputs);
@@ -59,17 +59,17 @@ public class flakes extends App {
       autoDir();
     }
     if (flakeOpts.hasOption(flakeDir.getLongOpt())) {
-      String flakeUrl = flakeUrl(autoMode, flakeUrl, flakeOpts);
+      String flakeUri = flakeUri(autoMode, flakeUri, flakeOpts);
     }
   }
 
-  private static String flakeUrl(Option mode, Option flakeUrl, Options options) {
+  private static String flakeUri(Option mode, Option flakeUri, Options options) {
     // Get the user and hostname
     String hostname = new String();
     String username = new String();
-    String url;
+    String uri;
     if (options.hasOption(mode.getLongOpt())) {
-      return (flakeUrl.getValue());
+      return (flakeUri.getValue());
     } else {
       try {
         Runtime rt = Runtime.getRuntime();
@@ -86,9 +86,9 @@ public class flakes extends App {
         while ((tmpStr = stdError.readLine()) != null) {
           System.err.println("Error getting hostname: " + tmpStr);
         }
-        url = hostname;
+        uri = hostname;
       } catch (IOException e) {
-        System.err.println("Error getting flake url: " + e.getMessage());
+        System.err.println("Error getting flake uri: " + e.getMessage());
       }
       try {
         Runtime rt = Runtime.getRuntime();
@@ -105,11 +105,11 @@ public class flakes extends App {
         while ((tmpStr = stdError.readLine()) != null) {
           System.err.println("Error getting username: " + tmpStr);
         }
-        url = username + url;
+        uri = username + uri;
       } catch (IOException e) {
-        System.err.println("Error getting flake url: " + e.getMessage());
+        System.err.println("Error getting flake uri: " + e.getMessage());
       }
-      return url;
+      return uri;
     }
   }
 
