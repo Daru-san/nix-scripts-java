@@ -4,7 +4,6 @@ import org.apache.commons.cli.*;
 
 public class App {
   public static void main(String[] args) {
-    CommandLine cmd;
     CommandLineParser parser = new DefaultParser();
     HelpFormatter helper = new HelpFormatter();
 
@@ -21,7 +20,7 @@ public class App {
         .required(true)
         .desc("Update a specific set of onputs").build());
     flakeOpts.addOption(Option.builder("f").longOpt("flake-dir")
-        .argName("flake-dir")
+        .argName("directory")
         .hasArg()
         .required(true)
         .desc("Directory where the `flake.nix` is stored").build());
@@ -30,7 +29,7 @@ public class App {
     flakeOpts.addOption(new Option("a", "auto", false,
         "Get the userString and use the current working directory"));
     flakeOpts.addOption(Option.builder("s").longOpt("user-string")
-        .argName("user-string")
+        .argName("string")
         .hasArg()
         .required(true)
         .desc("The user@hostname combination used to build your configuration").build());
@@ -60,12 +59,12 @@ public class App {
       CommandLine buildCmd = parser.parse(buildOpts, args);
 
       if (buildCmd.hasOption("build") && buildCmd.hasOption("switch")) {
-        System.err.println("`suild` and `switch` are mutually exclusive");
+        System.err.println("`build` and `switch` are mutually exclusive");
         helper.printHelp("Build Options", buildOpts);
       }
 
       if (buildCmd.hasOption("build") && buildCmd.hasOption("help")) {
-        System.err.println("`suild` and `help` are mutually exclusive");
+        System.err.println("`build` and `help` are mutually exclusive");
         helper.printHelp("Build Options", buildOpts);
       }
 
