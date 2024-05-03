@@ -4,7 +4,7 @@ import org.apache.commons.cli.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
-import java.nio.file.Files;
+import java.nio.file.*;
 
 public class flakes extends App {
   public static void flakeOptions() {
@@ -54,27 +54,19 @@ public class flakes extends App {
     flakeOpts.addOption(configUrl);
 
     getDir(flakeDir);
-    getFlake(flakeDir, currentDir);
     getInputs(flakeInputs);
-  }
-
-  // TODO: Get these working properly
-  private static void getFlake(Option flakeDir, Option currentDir) {
-    CommandLine cmd;
-    CommandLineParser cmdParser = new DefaultParser();
-    Options flakeDirs = new Options();
-    flakeDirs.addOption(flakeDir);
-    flakeDirs.addOption(currentDir);
-
-    String flakeDirString[] = { flakeDir.getValue(), currentDir.getValue() };
-    // cmd = cmdParser.parse(flakeDirs,flakeDir);
-
+    if (flakeOpts.hasOption(autoMode.getLongOpt())) {
+      autoDir();
+    }
+    if (flakeOpts.hasOption(flakeDir.getLongOpt())) {
+      String flakeUrl = flakeUrl(autoMode, flakeUrl, flakeOpts);
+    }
   }
 
   private final static String flakeUrl(Option mode, Option flakeUrl, Options options) {
     // Get the user and hostname
-    String hostname;
-    String username;
+    String hostname = new String();
+    String username = new String();
     String url;
     if (options.hasOption(mode.getLongOpt())) {
       return (flakeUrl.getValue());
@@ -123,13 +115,22 @@ public class flakes extends App {
     }
   }
 
-  private static void getFlake(Option flakeDir) {
-    String dir = flakeDir.getValue();
+  private static void getDir(Option flakeDir) {
+    Path dir = Paths.get(flakeDir.getValue());
+    Path flake = Paths.get(dir + "/flake.nix");
     if (Files.notExists(dir)) {
-      System.err.println("Directory " + dir + " does not exist");
+      System.err.println("Directory `" + dir + "` does not exist");
     }
-    if (Files.notExists(dir + "/flake.nix")) {
-      System.err.println("Directory " + dir + " does not contain a `flake.nix` file");
+    if (Files.notExists(flake)) {
+      System.err.println("Directory `" + dir + "` does not contain a `flake.nix` file");
+    }
+  }
+
+  private static void autoDir() {
+    Path dir = Paths.get(System.getProperty("user.dir"));
+    Path flake = Paths.get(dir + "/flakes.nix");
+    if (Files.notExists(flake)) {
+      System.err.println("The current directory does not have a `flake.nix` file");
     }
   }
 
