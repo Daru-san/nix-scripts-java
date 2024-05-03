@@ -16,8 +16,8 @@ but the more I learn, the more I features will add
 
 ## Status
 
-[ ] Flake working
-[ ] Home manager program working
-[ ] Nixos rebuild program working
-[ ] Documentation
-[ ] Built successfully
+- [ ] Flake working
+- [ ] Home manager program working
+- [ ] Nixos rebuild program working
+- [ ] Documentation
+- [ ] Built successfully
