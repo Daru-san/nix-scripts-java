@@ -9,6 +9,10 @@ public class getFlags {
 
   }
 
+  // static CommandLine = new CommandLine();
+  static CommandLineParser parser = new DefaultParser();
+  HelpFormatter helper = new HelpFormatter();
+
   static void flakes() {
     Option updateInputs = new Option("U", "update-inputs", false, "Update all the flake inputs");
     Option enableFlake = new Option("F", "flake", false, "Enable flake usage");
@@ -26,6 +30,7 @@ public class getFlags {
         .hasArg()
         .required(true)
         .desc("The user@hostname combination used to build your configuration").build();
+
   }
 
   static void extraOptions() {
@@ -34,6 +39,11 @@ public class getFlags {
     Option verbose = new Option("v", "verbose", false, "Show verbose output");
     Option impure = new Option("i", "impure", false, "Enable the impure option in nix");
     Option dryRun = new Option("d", "dry-run", false, "Do not build anything, only show what is to be changed");
+    options.addOption(backup);
+    options.addOption(showTrace);
+    options.addOption(verbose);
+    options.addOption(impure);
+    options.addOption(dryRun);
   }
 
   static void buildOperation() {
