@@ -63,7 +63,7 @@ public class flakes extends App {
     }
   }
 
-  private final static String flakeUrl(Option mode, Option flakeUrl, Options options) {
+  private static String flakeUrl(Option mode, Option flakeUrl, Options options) {
     // Get the user and hostname
     String hostname = new String();
     String username = new String();
@@ -78,7 +78,6 @@ public class flakes extends App {
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-        // Read the output from the command
 
         String tmpStr = null;
         while ((tmpStr = stdInput.readLine()) != null) {
@@ -98,7 +97,6 @@ public class flakes extends App {
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-        // Read the output from the command
 
         String tmpStr = null;
         while ((tmpStr = stdInput.readLine()) != null) {
@@ -116,6 +114,8 @@ public class flakes extends App {
   }
 
   private static void getDir(Option flakeDir) {
+    // Check if the specified directory exists
+    // Check whether it has a flake.nix file
     Path dir = Paths.get(flakeDir.getValue());
     Path flake = Paths.get(dir + "/flake.nix");
     if (Files.notExists(dir)) {
@@ -127,6 +127,7 @@ public class flakes extends App {
   }
 
   private static void autoDir() {
+    // Check if the current working directory has a flake.nix file
     Path dir = Paths.get(System.getProperty("user.dir"));
     Path flake = Paths.get(dir + "/flakes.nix");
     if (Files.notExists(flake)) {
@@ -134,7 +135,14 @@ public class flakes extends App {
     }
   }
 
+  // TODO: Get flake inputs
   private static void getInputs(Option flakeInputs) {
 
   }
 }
+/*
+ * Goal:
+ * This class will deal with all of the flake-based parts of the program
+ * It will get the flake flags, get the user@hostname string and check for all
+ * the flake inputs to make sure that they all exist
+ */
